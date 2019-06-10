@@ -24,7 +24,11 @@ app.post("/api/book",(req,res) =>{
   const bookTitle = req.body.title;
 
   db.Book.create({
-    title: bookTitle
+    title: bookTitle,
+    description: req.body.description,
+    image:req.body.image,
+    link:req.body.link,
+    authors:req.body.authors
   }).then(function(book){
     console.log(book._id);
     res.sendStatus(200);
