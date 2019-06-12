@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3001;
 const app = express();
+const axios = require("axios");
 
 const db = require("./models");
 
@@ -23,7 +24,6 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 app.get("/api/book/:id",(req,res)=>{
   console.log("[DEBUG] GET REQUEST");
   // console.log(req.params.id)
-  console.log(req.query.book);
   res.sendStatus(200);
 
 
@@ -32,7 +32,35 @@ app.get("/api/book/:id",(req,res)=>{
 app.get("/api/books/google",(req,res)=>{
   console.log("[DEBUG] GET REQUEST");
   console.log(req.query.searchTerm);
-  res.sendStatus(200);
+  const BASE_URL = "https://www.googleapis.com/books/v1/volumes?q="
+  const QUERY = req.query.searchTerm;
+  let bookArray =[];
+  axios.get(BASE_URL+QUERY)
+  .then(function (response) {
+    console.log(response);
+    response.data.items.map(
+      x => {
+        const book = {
+          title: x.volumeInfo.title,
+          authors: x.volumeInfo.authors,
+          description: x.volumeInfo.description,
+          image: x.volumeInfo.imageLinks.smallThumbnail, //there is also thumbnail
+          link: x.volumeInfo.previewLink
+        }
+        bookArray.push(book);
+      }
+    );
+    res.status(200).json({bookArray});
+  })
+  .catch(function (error) {
+    console.log(error);
+    res.status(500).json({error});
+  })
+  .then(function () {
+    // always executed
+  });  
+  
+  
 
 
 });
