@@ -8,15 +8,12 @@ const  axios = require("axios");
 class  SearchPage extends Component {
     constructor(props){
         super(props);
-        //Define State here
+        this.state = {
+          bookArray: []
+        }
+        
     }
 
-    callApi = async () => {
-        const response = await fetch('/api/book');
-        // const body = await response.json();
-        // if (response.status !== 200) throw Error(body.message);
-        // return body;
-      };
 
     clickHandler = (event)=>{
         event.preventDefault();
@@ -40,15 +37,26 @@ class  SearchPage extends Component {
 
     }
   render(){
-    return (
+    const {bookArray} = this.state;
+    return bookArray.length ?(
         <div>
           <Nav/>
           <Jumbotron/>
           <SearchBar
             clickHandler ={this.clickHandler}
           />
-          <h1>Search Page</h1>
+          <h1>Books Found</h1>
         </div>
+    ):(
+      <div>
+      <Nav/>
+      <Jumbotron/>
+      <SearchBar
+        clickHandler ={this.clickHandler}
+      />
+      <h1>No Books Found</h1>
+    </div> 
+
     );
       
   } 
