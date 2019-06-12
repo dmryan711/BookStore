@@ -19,7 +19,23 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/GoogleBooks";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
+
+app.get("/api/book/:id",(req,res)=>{
+  console.log("[DEBUG] GET REQUEST");
+  // console.log(req.params.id)
+  console.log(req.query.book);
+  res.sendStatus(200);
+
+
+});
 // Define API routes here
+app.get("/api/books/google",(req,res)=>{
+  console.log("[DEBUG] GET REQUEST");
+  console.log(req.query.searchTerm);
+  res.sendStatus(200);
+
+
+});
 app.post("/api/book",(req,res) =>{
   const bookTitle = req.body.title;
 
