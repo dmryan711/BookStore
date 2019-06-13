@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3001;
 const app = express();
 const axios = require("axios");
+require('dotenv').config()
+
 
 const db = require("./models");
 
@@ -34,8 +36,10 @@ app.get("/api/books/google",(req,res)=>{
   console.log(req.query.searchTerm);
   const BASE_URL = "https://www.googleapis.com/books/v1/volumes?q="
   const QUERY = req.query.searchTerm;
+  const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
+  const API_STRING = "&key="+API_KEY;
   let bookArray =[];
-  axios.get(BASE_URL+QUERY)
+  axios.get(BASE_URL+QUERY+API_STRING)
   .then(function (response) {
     console.log(response);
     response.data.items.map(
@@ -45,7 +49,8 @@ app.get("/api/books/google",(req,res)=>{
           authors: x.volumeInfo.authors,
           description: x.volumeInfo.description,
           image: x.volumeInfo.imageLinks.smallThumbnail, //there is also thumbnail
-          link: x.volumeInfo.previewLink
+          link: x.volumeInfo.previewLink,
+          id: x.id
         }
         bookArray.push(book);
       }
