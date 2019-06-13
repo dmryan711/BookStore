@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Nav from "../component/NavBar";
 import Jumbotron from "../component/Jumbotron";
 import SearchBar from "../component/SearchBar";
+import Book from "../component/Book";
 const  axios = require("axios");
 
 // Depending on the current path, this component sets the "active" class on the appropriate navigation link item
@@ -12,6 +13,31 @@ class  SearchPage extends Component {
           bookArray: []
         }
         
+    }
+
+    createCard = (bookObject)=>{
+        return <Book
+          key = {bookObject.id}
+          title = {bookObject.title}
+          authors = {bookObject.authors}
+          image = {bookObject.image}
+          link = {bookObject.link}
+          description = {bookObject.description}
+          buttonVerb = {"Save"}
+          viewClickHandler = {bookObject.link}
+          altButtonClickHandler = {this.testClick}
+
+
+        />
+    }
+
+    createCards = bookObjectArray => {
+      return bookObjectArray.map(this.createCard);
+
+  }
+
+    testClick = () =>{
+      console.log("Hey");
     }
 
 
@@ -25,15 +51,18 @@ class  SearchPage extends Component {
                 searchTerm:data.get("searchBox")
             }
           })
-          .then(function (response) {
-            console.log(response);
+          .then((response) => {
+            console.log(response.data.bookArray);
+          
+            this.setState({
+              bookArray: response.data.bookArray
+
+            });
           })
-          .catch(function (error) {
+          .catch((error) =>{
             console.log(error);
-          })
-          .then(function () {
-            // always executed
-          });  
+            
+          });
 
     }
   render(){
@@ -45,6 +74,7 @@ class  SearchPage extends Component {
           <SearchBar
             clickHandler ={this.clickHandler}
           />
+           {this.createCards(bookArray)}
           <h1>Books Found</h1>
         </div>
     ):(
