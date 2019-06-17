@@ -69,11 +69,11 @@ app.get("/api/books/google",(req,res)=>{
 
 
 });
-app.post("/api/book",(req,res) =>{
-  const bookTitle = req.body.title;
+app.post("/api/saveBook",(req,res) =>{
 
   db.Book.create({
-    title: bookTitle,
+    id: req.body.id,
+    title: req.body.title,
     description: req.body.description,
     image:req.body.image,
     link:req.body.link,
