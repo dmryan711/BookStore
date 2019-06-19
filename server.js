@@ -27,8 +27,22 @@ app.get("/api/book/:id",(req,res)=>{
   console.log("[DEBUG] GET REQUEST");
   // console.log(req.params.id)
   res.sendStatus(200);
+});
 
+app.post("/api/book/delete/:id",(req,res)=>{
+  console.log("[DEBUG] GET REQUEST For Delete");
+  console.log(req.params.id);
+  db.Book.findOneAndRemove({_id: req.params.id})
+     .then((docs)=>{
+        if(docs) {
+          res.status(200).json({"success":true,data:docs});
+        } else {
+          res.status(500).json({"success":false,data:"no such book exist"});
+        }
+   }).catch((err)=>{
+    res.status(500).json({"success":false,data:"something else went wrong"});
 
+   })
 });
 
 app.get("/api/books/savedToMongo",(req,res)=>{

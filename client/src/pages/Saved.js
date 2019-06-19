@@ -25,10 +25,32 @@ class  SavedPage extends Component {
 
   }
 
+  deleteBook = (id) => {
+    console.log("Delete");
+    const {bookArray} = this.state;
+    const bookId = id;
+    console.log(id);
+  }
+
+  saveBook = (id) =>{
+    const {bookArray} = this.state;
+    const bookId = id;
+   console.log(id);
+    let book = {};
+    for(let i = 0;i<bookArray.length;i++){
+      if(bookArray[i].id === bookId){
+        book =  bookArray[i];
+        console.log("DEBUG -- Save Book");
+        console.log(book);
+      }
+    }
+    //Save book stuff here
+    this.saveBookToDB(book);
+  }
 
   createCard = (bookObject)=>{
     return <Book
-      key = {bookObject.id}
+      key = {bookObject._id}
       title = {bookObject.title}
       authors = {bookObject.authors}
       image = {bookObject.image}
@@ -36,8 +58,8 @@ class  SavedPage extends Component {
       description = {bookObject.description}
       buttonVerb = {"Delete"}
       viewClickHandler = {bookObject.link}
-      altButtonClickHandler = {this.saveBook}
-      id = {bookObject.id}
+      altButtonClickHandler = {this.deleteBook}
+      id = {bookObject._id}
     />
 }
 
