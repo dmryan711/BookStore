@@ -25,9 +25,8 @@ class  SearchPage extends Component {
           description = {bookObject.description}
           buttonVerb = {"Save"}
           viewClickHandler = {bookObject.link}
-          altButtonClickHandler = {this.testClick}
-
-
+          altButtonClickHandler = {this.saveBook}
+          id = {bookObject.id}
         />
     }
 
@@ -36,8 +35,38 @@ class  SearchPage extends Component {
 
   }
 
-    testClick = () =>{
-      console.log("Hey");
+    saveBook = (id) =>{
+      const {bookArray} = this.state;
+      const bookId = id;
+     console.log(id);
+      let book = {};
+      for(let i = 0;i<bookArray.length;i++){
+        if(bookArray[i].id === bookId){
+          book =  bookArray[i];
+          console.log("DEBUG -- Save Book");
+          console.log(book);
+        }
+      }
+      //Save book stuff here
+      this.saveBookToDB(book);
+    }
+
+    saveBookToDB = (book) =>{
+      console.log(book.title);
+      axios.post("/api/saveBook",
+      { id: book.id,
+        title: book.title,
+        description: book.description,
+        image:book.image,
+        link:book.link,
+        authors:book.authors
+      }
+      ).then((response)=>{
+        console.log("Saved");
+
+      }).catch((error)=>{
+        console.log(error);
+      });
     }
 
 
