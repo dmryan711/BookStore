@@ -29,10 +29,10 @@ app.get("/api/book/:id",(req,res)=>{
   res.sendStatus(200);
 });
 
-app.post("/api/book/delete/:id",(req,res)=>{
+app.post("/api/book/delete",(req,res)=>{
   console.log("[DEBUG] GET REQUEST For Delete");
-  console.log(req.params.id);
-  db.Book.findOneAndRemove({_id: req.params.id})
+  console.log(req.body.id);
+  db.Book.findOneAndRemove({_id: req.body.id})
      .then((docs)=>{
         if(docs) {
           res.status(200).json({"success":true,data:docs});

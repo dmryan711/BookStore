@@ -104,7 +104,7 @@ class  SearchPage extends Component {
             clickHandler ={this.clickHandler}
           />
            {this.createCards(bookArray)}
-          <h1>Books Found</h1>
+          
         </div>
     ):(
       <div>

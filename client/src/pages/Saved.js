@@ -30,23 +30,35 @@ class  SavedPage extends Component {
     const {bookArray} = this.state;
     const bookId = id;
     console.log(id);
-  }
-
-  saveBook = (id) =>{
-    const {bookArray} = this.state;
-    const bookId = id;
-   console.log(id);
-    let book = {};
     for(let i = 0;i<bookArray.length;i++){
-      if(bookArray[i].id === bookId){
-        book =  bookArray[i];
-        console.log("DEBUG -- Save Book");
-        console.log(book);
+      if(bookArray[i]._id === bookId){
+        console.log("DEBUG -- Delete Book Found");
+        //Remove Item in array
+        let newArray = bookArray;
+        newArray.splice(i,1);
+
+        //update state with new array
+        this.setState({bookArray:newArray});
       }
     }
-    //Save book stuff here
-    this.saveBookToDB(book);
+    //Delete from DB
+    this.deleteBookFromDB(bookId);
+
+    
   }
+
+
+deleteBookFromDB = (bookId) =>{
+  axios.post("/api/book/delete/",{
+    id:bookId
+  }).then((response)=>{
+    console.log("Deleted");
+
+  }).catch((error)=>{
+    console.log(error);
+  });
+}
+
 
   createCard = (bookObject)=>{
     return <Book
@@ -76,7 +88,7 @@ createCards = bookObjectArray => {
           <Jumbotron/>
          
            {this.createCards(bookArray)}
-          <h1>Books Found</h1>
+          
         </div>
     ):(
       <div>
