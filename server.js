@@ -59,6 +59,29 @@ app.get("/api/books/savedToMongo",(req,res)=>{
 
 });
 
+app.post("/api/saveBook",(req,res) =>{
+
+  db.Book.create({
+    id: req.body.id,
+    title: req.body.title,
+    description: req.body.description,
+    image:req.body.image,
+    link:req.body.link,
+    authors:req.body.authors
+  }).then(function(book){
+    console.log(book._id);
+    res.sendStatus(200);
+    console.log("[DEBUG]  WORKING");
+
+  }).catch(function(err){
+    console.log(err.message);
+    console.log("[DEBUG] NOT WORKING");
+
+    res.sendStatus(400);
+  });
+
+});
+
 
 // Define API routes here
 app.get("/api/books/google",(req,res)=>{
