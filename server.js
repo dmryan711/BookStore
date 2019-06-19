@@ -27,8 +27,22 @@ app.get("/api/book/:id",(req,res)=>{
   console.log("[DEBUG] GET REQUEST");
   // console.log(req.params.id)
   res.sendStatus(200);
+});
 
+app.post("/api/book/delete",(req,res)=>{
+  console.log("[DEBUG] GET REQUEST For Delete");
+  console.log(req.body.id);
+  db.Book.findOneAndRemove({_id: req.body.id})
+     .then((docs)=>{
+        if(docs) {
+          res.status(200).json({"success":true,data:docs});
+        } else {
+          res.status(500).json({"success":false,data:"no such book exist"});
+        }
+   }).catch((err)=>{
+    res.status(500).json({"success":false,data:"something else went wrong"});
 
+   })
 });
 
 app.get("/api/books/savedToMongo",(req,res)=>{
@@ -41,6 +55,29 @@ app.get("/api/books/savedToMongo",(req,res)=>{
       console.log("DEBUG - NO ERROR WITH MONGO");
       res.status(200).json({books});
     }
+  });
+
+});
+
+app.post("/api/saveBook",(req,res) =>{
+
+  db.Book.create({
+    id: req.body.id,
+    title: req.body.title,
+    description: req.body.description,
+    image:req.body.image,
+    link:req.body.link,
+    authors:req.body.authors
+  }).then(function(book){
+    console.log(book._id);
+    res.sendStatus(200);
+    console.log("[DEBUG]  WORKING");
+
+  }).catch(function(err){
+    console.log(err.message);
+    console.log("[DEBUG] NOT WORKING");
+
+    res.sendStatus(400);
   });
 
 });
