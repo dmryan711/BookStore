@@ -30,6 +30,22 @@ app.get("/api/book/:id",(req,res)=>{
 
 
 });
+
+app.get("/api/books/savedToMongo",(req,res)=>{
+  console.log("[DEBUG] GET MONGO BOOKS");
+  db.Book.find({},function(error,books){
+    if(error){
+      console.log("DEBUG - ERROR WITH MONGO");
+       res.status(500).json({error});
+    }else{
+      console.log("DEBUG - NO ERROR WITH MONGO");
+      res.status(200).json({books});
+    }
+  });
+
+});
+
+
 // Define API routes here
 app.get("/api/books/google",(req,res)=>{
   console.log("[DEBUG] GET REQUEST");
